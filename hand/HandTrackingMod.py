@@ -38,7 +38,11 @@ class HandDetector:
     def getLandmarks(self, dims, handID, draw=True):
         if self.output.multi_hand_landmarks:
             hand = self.output.multi_hand_landmarks[handID]
-            return [(id, int(lm.x * dims[1]), int(lm.y * dims[0])) for id, lm in enumerate(hand.landmark)]
+            self.ldmarks = [(id, int(lm.x * dims[1]), int(lm.y * dims[0])) for id, lm in enumerate(hand.landmark)]
+            return self.ldmarks
+
+    def isFingerUp(self, fingerIndex):
+        return self.ldmarks[(fingerIndex + 1) * 4][2] < self.ldmarks[(fingerIndex + 1) * 4 - 2][2]
 
 
 def main():
@@ -53,9 +57,6 @@ def main():
 
         frame = detector.detect(frame)
         ldmarks = detector.getLandmarks(frame.shape, 0)
-
-        if ldmarks:
-            print(ldmarks[8])
 
         currTime = time.time()
         fps = 1 / (currTime - prevTime)

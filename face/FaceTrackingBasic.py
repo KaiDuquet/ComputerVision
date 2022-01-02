@@ -14,6 +14,7 @@ def main():
     currTime = 0
     while True:
         res, img = cap.read()
+        img = cv2.flip(img, 1)
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         output = faceDetection.process(imgRGB)
 

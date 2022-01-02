@@ -26,7 +26,7 @@ class FaceMeshDetector:
         if self.output.multi_face_landmarks:
             for faceLdmarks in self.output.multi_face_landmarks:
                 if draw:
-                    self.mpDraw.draw_landmarks(image, faceLdmarks, self.mpFaceMesh.FACEMESH_CONTOURS, self.drawingSpec, self.drawingSpec)
+                    self.mpDraw.draw_landmarks(image, faceLdmarks, self.mpFaceMesh.FACEMESH_TESSELATION, self.drawingSpec, self.drawingSpec)
 
                 face = []
                 for id, ldmark in enumerate(faceLdmarks.landmark):
@@ -43,9 +43,8 @@ def main():
     prevTime = 0
     while True:
         res, img = cap.read()
+        img = cv2.flip(img, 1)
         img, faces = detector.findFaceMeshes(img)
-        if faces:
-            print(len(faces))
 
         currTime = time.time()
         fps = 1 / (currTime - prevTime)
